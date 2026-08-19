@@ -525,5 +525,144 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                 { title: "Bunga Abadi", artist: "Lagu Pilihan Akustik", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
             ]
         };
+let currentSongIndex = null;
 
+        /* =========================================================
+           POPULATE DATA KE UI
+           ========================================================= */
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("ui-heroTitle").innerText = SITE_DATA.heroTitle;
+            document.getElementById("ui-heroSub").innerText = SITE_DATA.heroSub;
+
+            document.getElementById("ui-wishPreview").innerText = SITE_DATA.birthdayWish;
+            document.getElementById("ui-modalWishText").innerText = SITE_DATA.birthdayWish;
+
+            document.getElementById("ui-datePreview").innerText = SITE_DATA.birthDateFormatted;
+            document.getElementById("ui-calMonthYear").innerText = SITE_DATA.calendarMonthYear;
+            document.getElementById("ui-calDay").innerText = SITE_DATA.highlightDay;
+
+            document.getElementById("ui-letterPreview").innerText = SITE_DATA.letterText;
+            document.getElementById("ui-modalLetterText").innerText = SITE_DATA.letterText;
+
+            document.getElementById("ui-imgPreview1").src = SITE_DATA.image1;
+            document.getElementById("ui-img1").src = SITE_DATA.image1;
+            document.getElementById("ui-img2").src = SITE_DATA.image2;
+
+            // Papar senarai lagu
+            const songsContainer = document.getElementById("ui-songsList");
+            if (songsContainer) {
+                songsContainer.innerHTML = SITE_DATA.songs.map((song, idx) => `
+                    <div class="song-item">
+                        <div class="song-details">
+                            <div class="song-icon">🎵</div>
+                            <div class="song-info">
+                                <h4>${song.title}</h4>
+                                <p>${song.artist}</p>
+                            </div>
+                        </div>
+                        <button class="song-play-btn" id="play-btn-${idx}" onclick="playSpecificSong(${idx})">▶</button>
+                    </div>
+                `).join('');
+            }
+
+            initCanvas();
+        });
+
+        /* =========================================================
+           FUNGSI AUDIO / MUZIK
+           ========================================================= */
+        function toggleAudio() {
+            const audio = document.getElementById("bgAudio");
+            const btn = document.getElementById("musicToggle");
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = "⏸️";
+            } else {
+                audio.pause();
+                btn.innerText = "🎵";
+            }
+        }
+
+        function playSpecificSong(index) {
+            const audio = document.getElementById("bgAudio");
+            const btn = document.getElementById("musicToggle");
+            
+            if (currentSongIndex === index) {
+                if (audio.paused) {
+                    audio.play();
+                    btn.innerText = "⏸️";
+                    document.getElementById(`play-btn-${index}`).innerText = "⏸";
+                } else {
+                    audio.pause();
+                    btn.innerText = "🎵";
+                    document.getElementById(`play-btn-${index}`).innerText = "▶";
+                }
+                return;
+            }
+
+            SITE_DATA.songs.forEach((_, i) => {
+                const pBtn = document.getElementById(`play-btn-${i}`);
+                if (pBtn) pBtn.innerText = "▶";
+            });
+
+            currentSongIndex = index;
+            audio.src = SITE_DATA.songs[index].url;
+            audio.play();
+            btn.innerText = "⏸️";
+            document.getElementById(`play-btn-${index}`).innerText = "⏸";
+        }
+
+        /* =========================================================
+           FUNGSI MODAL & INTERAKSI
+           ========================================================= */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add("active");
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove("active");
+        }
+
+        /* =========================================================
+           ANIMASI LATAR BELAKANG (CANVAS BINTANG)
+           ========================================================= */
+        function initCanvas() {
+            const canvas = document.getElementById("bgCanvas");
+            const ctx = canvas.getContext("2d");
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const stars = Array.from({ length: 50 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: Math.random() * 1.5 + 0.5,
+                alpha: Math.random(),
+                speed: Math.random() * 0.02 + 0.005
+            }));
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                stars.forEach(star => {
+                    star.alpha += star.speed;
+                    if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+                    ctx.fillStyle = `rgba(212, 175, 55, ${Math.abs(star.alpha)})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener("resize", () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+        }
+    </script>
+</body>
+</html>
  
