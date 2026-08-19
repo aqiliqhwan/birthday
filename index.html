@@ -58,19 +58,22 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: opacity 1.5s ease, visibility 1.5s ease;
+            transition: opacity 1s ease, visibility 1s ease;
+            opacity: 1;
+            visibility: visible;
         }
 
         #intro-overlay.fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
 
         .big-heart {
             font-size: 90px;
             animation: pulse 1.2s infinite ease-in-out;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+            user-select: none;
         }
 
         .tap-text {
@@ -79,6 +82,7 @@
             color: var(--accent-gold);
             letter-spacing: 1px;
             animation: blink 1.5s infinite;
+            user-select: none;
         }
 
         @keyframes pulse {
@@ -241,6 +245,7 @@
             border-radius: 10px;
             object-fit: cover;
             margin: 4px 0;
+            background-color: #e0e0e0;
         }
 
         /* MODAL */
@@ -393,7 +398,7 @@
 <body>
 
     <!-- OVERLAY INTRO (LOVE BESAR) -->
-    <div id="intro-overlay" onclick="startApp()">
+    <div id="intro-overlay">
         <div class="big-heart">❤️</div>
         <div class="tap-text">TEKAN KAT SINI YAYANG ✨</div>
     </div>
@@ -553,7 +558,7 @@ terima kasih sebab sentiasa sabar dengan kerenah baby hm, sentiasa mendengar bil
 
 semoga dengan tambah usia ni, hubungan kita pun makin erat, makin matang, direstui dan berkekalan sampai bila-bila. papee pun yang akan datang, ingatlaa yang babyy akan sentiasa ada dekat sebelah diaa untuk sokong and bagi semangatt.
 
-happy birthday sekali lagi, my loveeeee !!! semoga hari ini penuh dengan senyuman dan kebahagiaan. babyy sayanggg yayanggg sangatt tauuu ATAPUUUU !!!!!! 💌✨`,
+happy birthday sekali lagi, my loveeeee !!! semoga hari ini penuh dengan senyuman dan kebahagiaan. babyy sayanggg yayanggg sangatt tauuu ATAPUUUU !!!!! 💌✨`,
 
             letterText: `hai yayangg, selamat hari jadi.
 
@@ -577,19 +582,33 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
 
         let currentSongIndex = null;
 
-        /* FUNGSI START APP & FADE OUT INTRO */
+        /* FUNGSI START APP & FADE OUT INTRO (FIXED WITH SAFETY CATCH) */
         function startApp() {
             const overlay = document.getElementById("intro-overlay");
-            overlay.classList.add("fade-out");
+            if (overlay) {
+                overlay.classList.add("fade-out");
+            }
 
             const audio = document.getElementById("bgAudio");
             const btn = document.getElementById("musicToggle");
-            audio.play().then(() => {
-                btn.innerText = "⏸️";
-            }).catch(err => console.log(err));
+            
+            if (audio) {
+                audio.play().then(() => {
+                    if (btn) btn.innerText = "⏸️";
+                }).catch(err => {
+                    console.log("Autoplay diblokir pelayar atau fail lagu tidak ditemui:", err);
+                });
+            }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            /* DAFTARKAN EVENT CLICK SECARA LANGSUNG KEPADA INTRO OVERLAY */
+            const overlay = document.getElementById("intro-overlay");
+            if (overlay) {
+                overlay.addEventListener("click", startApp);
+            }
+
+            /* MASUKKAN DATA KE UI */
             document.getElementById("ui-heroTitle").innerText = SITE_DATA.heroTitle;
             document.getElementById("ui-heroSub").innerText = SITE_DATA.heroSub;
 
@@ -690,6 +709,7 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
         /* ANIMASI SPRINKLES (LOVE + STARS) */
         function initCanvas() {
             const canvas = document.getElementById("bgCanvas");
+            if (!canvas) return;
             const ctx = canvas.getContext("2d");
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
