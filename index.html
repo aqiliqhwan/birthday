@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Hari Jadi Yayang ❤️</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           1. TEMA & PEMBOLEHUBAH WARNA (DARK EMERALD GREEN)
+           ========================================================= */
+        :root {
+            --bg-deep-green: #061409;
+            --bg-card: #0d2613;
+            --border-emerald: #1b4d27;
+            --accent-gold: #d4af37;
+            --text-light: #e8f5e9;
+            --text-muted: #a3c2a6;
+            --card-white: #ffffff;
+            --card-text-dark: #1a2e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-deep-green);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas Latar Belakang Zarah / Stars */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Container Telefon Bimbit */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #061409 0%, #0a210f 100%);
+            position: relative;
+            z-index: 2;
+            padding: 24px 18px 40px 18px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        @media (min-width: 480px) {
+            .app-container {
+                min-height: 840px;
+                height: max-content;
+                border-radius: 36px;
+                border: 2px solid var(--border-emerald);
+                margin: 20px 0;
+            }
+        }
+
+        /* =========================================================
+           2. HEADER & MUZIK
+           ========================================================= */
+        .header-section {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .music-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-emerald);
+            color: var(--accent-gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(0.9);
+        }
+
+        .main-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: -0.5px;
+            margin-top: 8px;
+        }
+
+        .sub-title {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: var(--accent-gold);
+            margin-top: 2px;
+        }
+
+        /* =========================================================
+           3. GRID KAD
+           ========================================================= */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            flex: 1;
+        }
+
+        .grid-card {
+            background-color: var(--card-white);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 150px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-card:active {
+            transform: scale(0.96);
+        }
+
+        .grid-card .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--card-text-dark);
+            margin-bottom: 8px;
+        }
+
+        .grid-card .card-icon {
+            font-size: 32px;
+            margin: 6px 0;
+        }
+
+        .grid-card .card-preview {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .grid-card .btn-open {
+            margin-top: 10px;
+            background-color: var(--card-text-dark);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .photo-preview-box {
+            width: 100%;
+            height: 65px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin: 4px 0;
+        }
+
+        /* =========================================================
+           4. MODAL / OVERLAY SKRIN PENUH
+           ========================================================= */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(6, 20, 9, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            padding: 24px 20px;
+            border-radius: inherit;
+            overflow-y: auto;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-emerald);
+            padding-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .close-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-emerald);
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        /* Layout Kalendar */
+        .calendar-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-emerald);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+        .day-name { font-weight: 700; color: var(--accent-gold); }
+        .day-num { padding: 6px; border-radius: 8px; }
+        .day-num.highlight {
+            background-color: var(--accent-gold);
+            color: var(--card-text-dark);
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Layout Galeri Foto */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .gallery-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--border-emerald);
+        }
+
+        /* Layout Songs */
+        .song-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-emerald);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .song-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .song-icon { font-size: 24px; }
+        .song-info h4 { font-size: 14px; color: var(--accent-gold); }
+        .song-info p { font-size: 11px; color: var(--text-muted); }
+        .song-play-btn {
+            background: var(--border-emerald);
+            border: none;
+            color: var(--text-light);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .footer-credits {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-family: 'Caveat', cursive;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ELEMEN AUDIO UTAMA (INSTRUMENTAL BIRTHDAY TENANG) -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8230536.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Canvas Latar Belakang -->
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="app-container">
+        
+        <!-- HEADER -->
+        <div class="header-section">
+            <button class="music-btn" id="musicToggle" onclick="toggleAudio()" title="Mainkan Lagu">🎵</button>
+            <h1 class="main-title" id="ui-heroTitle">Selamat Hari Jadi</h1>
+            <div class="sub-title" id="ui-heroSub">Untuk Yayang ❤️</div>
+        </div>
+
+        <!-- GRID KAD UTAMA -->
+        <div class="card-grid">
+            
+            <!-- Kad 1: Birthday Wish -->
+            <div class="grid-card" onclick="openModal('modal-wish')">
+                <div class="card-title">Birthday Wish</div>
+                <div class="card-icon">🎂</div>
+                <p class="card-preview" id="ui-wishPreview">Semoga hari ini penuh dengan kegembiraan...</p>
+                <div class="btn-open">Buka</div>
+            </div>
+
+            <!-- Kad 2: Our Memories -->
+            <div class="grid-card" onclick="openModal('modal-memories')">
+                <div class="card-title">Our Memories</div>
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80" class="photo-preview-box" id="ui-imgPreview1" alt="Memory">
+                <div class="btn-open">Lihat</div>
+            </div>
+
+            <!-- Kad 3: Our Songs -->
+            <div class="grid-card" onclick="openModal('modal-songs')">
+                <div class="card-title">Our Songs</div>
+                <div class="card-icon">🎧</div>
+                <p class="card-preview">Lagu-lagu yang mengingatkan baby pada yayang</p>
+                <div class="btn-open">Dengar</div>
+            </div>
+
+            <!-- Kad 4: Tarikh Penting -->
+            <div class="grid-card" onclick="openModal('modal-calendar')">
+                <div class="card-title">Tarikh Penting</div>
+                <div class="card-icon">📅</div>
+                <p class="card-preview" id="ui-datePreview">18 Ogos 2007</p>
+                <div class="btn-open">Semak</div>
+            </div>
+
+            <!-- Kad 5: Letter for You (Full Width Kad) -->
+            <div class="grid-card" style="grid-column: span 2;" onclick="openModal('modal-letter')">
+                <div class="card-title">Letter For You ✉️</div>
+                <p class="card-preview" id="ui-letterPreview" style="-webkit-line-clamp: 2;">cer bukakkk</p>
+                <div class="btn-open">Baca Surat Penuh</div>
+            </div>
+
+        </div>
+
+        <div class="footer-credits">Coded with Love by Baby ❤️</div>
+
+        <!-- =========================================================
+           5. MODAL CONTENT (DETAILS)
+           ========================================================= -->
+
+        <!-- Modal 1: Birthday Wish -->
+        <div class="modal-overlay" id="modal-wish">
+            <div class="modal-header">
+                <div class="modal-title">Birthday Wish 🎂</div>
+                <button class="close-btn" onclick="closeModal('modal-wish')">✕</button>
+            </div>
+            <div class="modal-body" id="ui-modalWishText">
+            </div>
+        </div>
+
+        <!-- Modal 2: Our Memories -->
+        <div class="modal-overlay" id="modal-memories">
+            <div class="modal-header">
+                <div class="modal-title">Our Memories 📸</div>
+                <button class="close-btn" onclick="closeModal('modal-memories')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 12px;">Kenangan manis yang takkan baby lupakan:</p>
+                <div class="gallery-grid">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80" class="gallery-img" id="ui-img1" alt="Foto 1">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80" class="gallery-img" id="ui-img2" alt="Foto 2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 3: Our Songs -->
+        <div class="modal-overlay" id="modal-songs">
+            <div class="modal-header">
+                <div class="modal-title">Our Songs 🎧</div>
+                <button class="close-btn" onclick="closeModal('modal-songs')">✕</button>
+            </div>
+            <div class="modal-body" id="ui-songsList">
+            </div>
+        </div>
+
+        <!-- Modal 4: Calendar -->
+        <div class="modal-overlay" id="modal-calendar">
+            <div class="modal-header">
+                <div class="modal-title">Hari Terindah 📅</div>
+                <button class="close-btn" onclick="closeModal('modal-calendar')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="calendar-box">
+                    <h3 id="ui-calMonthYear" style="color: var(--accent-gold);">Ogos 2007</h3>
+                    <div class="calendar-grid">
+                        <div class="day-name">A</div><div class="day-name">I</div><div class="day-name">S</div><div class="day-name">R</div><div class="day-name">K</div><div class="day-name">J</div><div class="day-name">S</div>
+                        <div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div><div class="day-num">15</div><div class="day-num">16</div><div class="day-num">17</div>
+                        <div class="day-num highlight" id="ui-calDay">18</div>
+                        <div class="day-num">19</div><div class="day-num">20</div><div class="day-num">21</div><div class="day-num">22</div><div class="day-num">23</div><div class="day-num">24</div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted);" id="ui-calNote">
+                    Hari lahir insan yang paling istimewa dalam hidup baby.
+                </p>
+            </div>
+        </div>
+
+        <!-- Modal 5: Letter -->
+        <div class="modal-overlay" id="modal-letter">
+            <div class="modal-header">
+                <div class="modal-title">Letter For You ✉️</div>
+                <button class="close-btn" onclick="closeModal('modal-letter')">✕</button>
+            </div>
+            <div class="modal-body" id="ui-modalLetterText" style="white-space: pre-line; font-size: 13px;">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+       6. JAVASCRIPT & KANDUNGAN
+       ========================================================= -->
+    <script>
+        /* =========================================================
+           DATA KANDUNGAN
+           ========================================================= */
+        const SITE_DATA = {
+            coupleName: "yayangg",
+            senderName: "baby",
+            heroTitle: "Selamat Hari Jadi",
+            heroSub: "Untuk Yayang ❤️",
+
+            birthDateFormatted: "20 Ogos 2007",
+            calendarMonthYear: "Ogos 2007",
+            highlightDay: "20",
+
+            image1: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80",
+            image2: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80",
+
+            birthdayWish: `Selamat hari lahir buat insan yang paling bermakna dalam hidup baby! ❤️
+            
+Semoga di usia sweet 19 ini, yayang dikurniakan kesihatan yang baik, dipermudahkan segala urusan, dan sentiasa dipelihara kebahagiaannya. Terima kasih sebab sentiasa ada dengan baby. Yayang adalah hadiah terindah dalam hidup baby!`,
+
+            letterText: `hai yayangg, selamat hari jadi.
+
+pejam celik, harini dah masuk umur 19 tahun dah yayang baby ni. rasa macam baruu jee masuk kv tapi bila pandang balik jalan yang kita dah lalu sesama, banyak betul kenangan, suka, duka dan cerita yang kita dah cipta dan lalui sesamee sepanjang hampir lebih kurang 3 tahun nii.
+
+baby cuma nak yayang tahu, kehadiran yayang dalam hidup baby bukan sekadar peneman, tapi yayang lah rumah dan tempat paling selamat untuk baby berteduh bila dunia luar rasa penat sangat. even when the days yang kita gaduh ke salah faham kee apee, terima kasih sebab tak pernah jemu bersabar dengan kerenah baby, selalu dengar luahan baby tanpa menghukum, dan sentiasa ada bila baby perlukan seseorang untuk pegang tangan baby.
+
+today is the day that yayangg turn into 19 year. that mean your last teen, baby doa semoga jalan hidup yayang sentiasa diringankan, dipermudahakan segala urusan. moga setiap impian yang yayang simpan tuu akan slowly dipenuhi dan dikabulkan satu per satu. kalau nanti ada hari yang rasa berat atau rasa nak mengalah, ingat tau yang baby akan sentiasa ada kat sebelah yayang selaluu, raikan setiap kejayaan kecik yayang dan temankan yayang lalu apa sahaja ujian walaupun semua orang berpaling dari yayangg.
+
+terima kasih sebab jadi manusia yang paling lembut hatinya untuk baby. never forget how deeply, truly loved you are by me dengan penuh kasih sayang yang tak pernah berkurang.
+
+babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
+
+– baby ❤️`,
+
+            songs: [
+                { title: "Kita Lewati Berdua", artist: "Lagu Kita", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+                { title: "Bunga Abadi", artist: "Lagu Pilihan Akustik", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+            ]
+        };
+
+ 
