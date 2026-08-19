@@ -103,12 +103,12 @@
             z-index: 1;
         }
 
-        /* Container Utama */
+        /* CONTAINER UTAMA */
         .app-container {
             width: 100%;
             max-width: 420px;
             min-height: 100vh;
-            background: linear-gradient(180deg, #061409 0%, #0a210f 100%);
+            background: linear-gradient(180deg, rgba(6,20,9,0.85) 0%, rgba(10,33,15,0.85) 100%);
             position: relative;
             z-index: 2;
             padding: 24px 18px 40px 18px;
@@ -116,7 +116,7 @@
             flex-direction: column;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
-
+        
         @media (min-width: 480px) {
             .app-container {
                 min-height: 840px;
@@ -679,21 +679,21 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             if (modal) modal.classList.remove("active");
         }
 
-        /* ANIMASI SPRINKLES (LOVE + STARS) */
+/* LUKISAN SPRINKLES (STARS 4 BUCU & LOVE) */
         function initCanvas() {
             const canvas = document.getElementById("bgCanvas");
             const ctx = canvas.getContext("2d");
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
 
-            const items = Array.from({ length: 40 }, () => ({
+            const items = Array.from({ length: 50 }, () => ({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                type: Math.random() > 0.5 ? 'heart' : 'star',
-                size: Math.random() * 12 + 8,
-                alpha: Math.random() * 0.7 + 0.3,
-                speedY: Math.random() * 0.6 + 0.2,
-                speedX: Math.sin(Math.random() * Math.PI) * 0.3
+                type: Math.random() > 0.4 ? 'heart' : 'star',
+                size: Math.random() * 10 + 6,
+                alpha: Math.random() * 0.8 + 0.2,
+                speedY: Math.random() * 0.7 + 0.3,
+                speedX: (Math.random() - 0.5) * 0.5
             }));
 
             function drawHeart(x, y, size, color) {
@@ -711,11 +711,30 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                 ctx.restore();
             }
 
-            function drawStar(x, y, size, color) {
+            function drawStarShape(cx, cy, spikes, outerRadius, innerRadius, color) {
+                let rot = Math.PI / 2 * 3;
+                let x = cx;
+                let y = cy;
+                let step = Math.PI / spikes;
+
                 ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(cx, cy - outerRadius);
+                for (let i = 0; i < spikes; i++) {
+                    x = cx + Math.cos(rot) * outerRadius;
+                    y = cy + Math.sin(rot) * outerRadius;
+                    ctx.lineTo(x, y);
+                    rot += step;
+
+                    x = cx + Math.cos(rot) * innerRadius;
+                    y = cy + Math.sin(rot) * innerRadius;
+                    ctx.lineTo(x, y);
+                    rot += step;
+                }
+                ctx.lineTo(cx, cy - outerRadius);
+                ctx.closePath();
                 ctx.fillStyle = color;
-                ctx.font = `${size}px sans-serif`;
-                ctx.fillText("✨", x, y);
+                ctx.fill();
                 ctx.restore();
             }
 
@@ -733,7 +752,7 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                     if (item.type === 'heart') {
                         drawHeart(item.x, item.y, item.size, `rgba(212, 175, 55, ${item.alpha})`);
                     } else {
-                        drawStar(item.x, item.y, item.size, `rgba(255, 255, 255, ${item.alpha})`);
+                        drawStarShape(item.x, item.y, 4, item.size, item.size / 2.5, `rgba(255, 255, 255, ${item.alpha})`);
                     }
                 });
                 requestAnimationFrame(animate);
@@ -744,6 +763,7 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
             });
+        }
         }
     </script>
 </body>
