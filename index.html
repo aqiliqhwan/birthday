@@ -44,7 +44,55 @@
             position: relative;
         }
 
-        /* Canvas Latar Belakang Zarah / Stars */
+        /* INTRO OVERLAY (LOVE BESAR) */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-deep-green);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+        }
+
+        #intro-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .big-heart {
+            font-size: 90px;
+            animation: pulse 1.2s infinite ease-in-out;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+        }
+
+        .tap-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Canvas Latar Belakang (Sprinkles) */
         #bgCanvas {
             position: fixed;
             top: 0;
@@ -55,7 +103,7 @@
             z-index: 1;
         }
 
-        /* Container Telefon Bimbit */
+        /* Container Utama */
         .app-container {
             width: 100%;
             max-width: 420px;
@@ -79,9 +127,7 @@
             }
         }
 
-        /* =========================================================
-           2. HEADER & MUZIK
-           ========================================================= */
+        /* HEADER */
         .header-section {
             text-align: center;
             margin-bottom: 24px;
@@ -126,9 +172,7 @@
             margin-top: 2px;
         }
 
-        /* =========================================================
-           3. GRID KAD
-           ========================================================= */
+        /* GRID KAD */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -199,9 +243,7 @@
             margin: 4px 0;
         }
 
-        /* =========================================================
-           4. MODAL / OVERLAY SKRIN PENUH
-           ========================================================= */
+        /* MODAL */
         .modal-overlay {
             position: absolute;
             top: 0;
@@ -350,9 +392,15 @@
 </head>
 <body>
 
+    <!-- OVERLAY INTRO (LOVE BESAR) -->
+    <div id="intro-overlay" onclick="startApp()">
+        <div class="big-heart">❤️</div>
+        <div class="tap-text">TEKAN KAT SINI YAYANG ✨</div>
+    </div>
+
     <!-- ELEMEN AUDIO UTAMA -->
     <audio id="bgAudio" loop preload="auto">
-        <source src="Overnight - Kita Lewati Berdua (Official Audio).mp3" type="audio/mpeg">
+        <source src="HAPPY BIRTHDAY TO YOU PIANO INSTRUMENTAL BEST HAPPY BITHDAY MUSIC 2021.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Canvas Latar Belakang -->
@@ -374,7 +422,7 @@
             <div class="grid-card" onclick="openModal('modal-wish')">
                 <div class="card-title">Birthday Wish</div>
                 <div class="card-icon">🎂</div>
-                <p class="card-preview" id="ui-wishPreview">Semoga hari ini penuh dengan kegembiraan...</p>
+                <p class="card-preview" id="ui-wishPreview">selamatt harii jadiiii sayanggkuuuuu !!!</p>
                 <div class="btn-open">Buka</div>
             </div>
 
@@ -401,7 +449,7 @@
                 <div class="btn-open">Nahh</div>
             </div>
 
-            <!-- Kad 5: Letter for You (Full Width Kad) -->
+            <!-- Kad 5: Letter for You -->
             <div class="grid-card" style="grid-column: span 2;" onclick="openModal('modal-letter')">
                 <div class="card-title">Letter For You ✉️</div>
                 <p class="card-preview" id="ui-letterPreview" style="-webkit-line-clamp: 2;">cer bukakkk</p>
@@ -412,21 +460,15 @@
 
         <div class="footer-credits">Coded with Love by Baby ❤️</div>
 
-        <!-- =========================================================
-           5. MODAL CONTENT (DETAILS)
-           ========================================================= -->
-
-        <!-- Modal 1: Birthday Wish -->
+        <!-- MODALS -->
         <div class="modal-overlay" id="modal-wish">
             <div class="modal-header">
                 <div class="modal-title">Birthday Wish 🎂</div>
                 <button class="close-btn" onclick="closeModal('modal-wish')">✕</button>
             </div>
-            <div class="modal-body" id="ui-modalWishText">
-            </div>
+            <div class="modal-body" id="ui-modalWishText" style="white-space: pre-line;"></div>
         </div>
 
-        <!-- Modal 2: Our Memories -->
         <div class="modal-overlay" id="modal-memories">
             <div class="modal-header">
                 <div class="modal-title">Our Memories 📸</div>
@@ -434,23 +476,18 @@
             </div>
             <div class="modal-body">
                 <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 12px;">Kenangan manis yang takkan baby lupakan:</p>
-                <div class="gallery-grid" id="ui-galleryGrid">
-                    <!-- Gambar dimasukkan secara dinamik dari JS -->
-                </div>
+                <div class="gallery-grid" id="ui-galleryGrid"></div>
             </div>
         </div>
 
-        <!-- Modal 3: Our Songs -->
         <div class="modal-overlay" id="modal-songs">
             <div class="modal-header">
                 <div class="modal-title">Our Songs 🎧</div>
                 <button class="close-btn" onclick="closeModal('modal-songs')">✕</button>
             </div>
-            <div class="modal-body" id="ui-songsList">
-            </div>
+            <div class="modal-body" id="ui-songsList"></div>
         </div>
 
-        <!-- Modal 4: Calendar -->
         <div class="modal-overlay" id="modal-calendar">
             <div class="modal-header">
                 <div class="modal-title">Hari Terindah 📅</div>
@@ -472,24 +509,17 @@
             </div>
         </div>
 
-        <!-- Modal 5: Letter -->
         <div class="modal-overlay" id="modal-letter">
             <div class="modal-header">
                 <div class="modal-title">Letter For You ✉️</div>
                 <button class="close-btn" onclick="closeModal('modal-letter')">✕</button>
             </div>
-            <div class="modal-body" id="ui-modalLetterText" style="white-space: pre-line; font-size: 13px;">
-            </div>
+            <div class="modal-body" id="ui-modalLetterText" style="white-space: pre-line; font-size: 13px;"></div>
         </div>
 
     </div>
-    <!-- =========================================================
-       6. JAVASCRIPT & KANDUNGAN
-       ========================================================= -->
     <script>
-     /* =========================================================
-           DATA KANDUNGAN
-           ========================================================= */
+        /* DATA KANDUNGAN */
         const SITE_DATA = {
             coupleName: "yayangg",
             senderName: "baby",
@@ -500,15 +530,22 @@
             calendarMonthYear: "Ogos 2007",
             highlightDay: "20",
 
-            // Tambah sahaja nama gambar dalam senarai ini (array)
             images: [
                 "IMG-20231124-WA0020.jpeg",
                 "IMG-20250418-WA0012.jpg"
             ],
 
-            birthdayWish: `Selamat hari lahir buat insan yang paling bermakna dalam hidup baby! ❤️
-            
-Semoga di usia sweet 19 ini, yayang dikurniakan kesihatan yang baik, dipermudahkan segala urusan, dan sentiasa dipelihara kebahagiaannya. Terima kasih sebab sentiasa ada dengan baby. Yayang adalah hadiah terindah dalam hidup baby!`,
+            birthdayWish: `selamatt harii jadiiii sayanggkuuuuu !!! 🤍🎉🎂
+
+hari ini hari paling istimewaaa sebab ini hari lahir insan yang paling saya sayang dan hargai dalam dunia niii hehehehe. terima kasih sangatsangat sebab hadir dalam hidup baby, menceriakan setiap hari babyy dan sentiasa jadi tempat orang bersandar waktu susah dan senang. tak pernah terlintas dalam fikiran yang saya akan jumpa seseorang yang sebaik, sepenyayang dan selengkappp yayanggg cutiee patootieeeeeee
+
+semoga dengan bertambahnya umur yayangg hari ni, yayangg dipanjangkan umur, dimurahkan rezeki yang melimpah ruah dari setiap sudut, diberi kesihatan yang berpanjangan dan sentiasa di bawah lindungan serta rahmat-Nya. orangg doakan segala urusan dia dipermudahkan, segala impian dan cita cita yang yayangg simpan dalam hati tercapai satu per satu dan yayangg sentiasa dikelilingi dengan kebahagiaan yang tak pernah putus.
+
+terima kasih sebab sentiasa sabar dengan kerenah baby hm, sentiasa mendengar bila orang cite papee dan tak pernah jemu buat sayee senyummn. yayangg bukan sekadar pasangan, tapi diaa laa sahabat terbaik dan peneman jiwa saya. setiap saat yang kita luangkan bersama sangat bermakna gilee and orang hargai sangatt.
+
+semoga dengan tambah usia ni, hubungan kita pun makin erat, makin matang, direstui dan berkekalan sampai bila-bila. papee pun yang akan datang, ingatlaa yang babyy akan sentiasa ada dekat sebelah diaa untuk sokong and bagi semangatt.
+
+happy birthday sekali lagi, my loveeeee !!! semoga hari ini penuh dengan senyuman dan kebahagiaan. babyy sayanggg yayanggg sangatt tauuu ATAPUUUU !!!!!! 💌✨`,
 
             letterText: `hai yayangg, selamat hari jadi.
 
@@ -516,7 +553,7 @@ pejam celik, harini dah masuk umur 19 tahun dah yayang baby ni. rasa macam baruu
 
 baby cuma nak yayang tahu, kehadiran yayang dalam hidup baby bukan sekadar peneman, tapi yayang lah rumah dan tempat paling selamat untuk baby berteduh bila dunia luar rasa penat sangat. even when the days yang kita gaduh ke salah faham kee apee, terima kasih sebab tak pernah jemu bersabar dengan kerenah baby, selalu dengar luahan baby tanpa menghukum, dan sentiasa ada bila baby perlukan seseorang untuk pegang tangan baby.
 
-today is the day that yayangg turn into 19 year. that mean your last teen, baby doa semoga jalan hidup yayang sentiasa diringankan, dipermudahakan segala urusan. moga setiap impian yang yayang simpan tuu akan slowly dipenuhi dan dikabulkan satu per satu. kalau nanti ada hari yang rasa berat atau rasa nak mengalah, ingat tau yang baby akan sentiasa ada kat sebelah yayang selaluu, raikan setiap kejayaan kecik yayang dan temankan yayang lalu apa sahaja ujian walaupun semua orang berpaling dari yayangg.
+today is the day that yayangg turn into 19 year. that mean your last teen, baby doa semoga jalan hidup yayang sentiasa diringankan, dipermudahkan segala urusan. moga setiap impian yang yayang simpan tuu akan slowly dipenuhi dan dikabulkan satu per satu. kalau nanti ada hari yang rasa berat atau rasa nak mengalah, ingat tau yang baby akan sentiasa ada kat sebelah yayang selaluu, raikan setiap kejayaan kecik yayang dan temankan yayang lalu apa sahaja ujian walaupun semua orang berpaling dari yayangg.
 
 terima kasih sebab jadi manusia yang paling lembut hatinya untuk baby. never forget how deeply, truly loved you are by me dengan penuh kasih sayang yang tak pernah berkurang.
 
@@ -532,9 +569,18 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
 
         let currentSongIndex = null;
 
-        /* =========================================================
-           POPULATE DATA KE UI
-           ========================================================= */
+        /* FUNGSI START APP & FADE OUT INTRO */
+        function startApp() {
+            const overlay = document.getElementById("intro-overlay");
+            overlay.classList.add("fade-out");
+
+            const audio = document.getElementById("bgAudio");
+            const btn = document.getElementById("musicToggle");
+            audio.play().then(() => {
+                btn.innerText = "⏸️";
+            }).catch(err => console.log(err));
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("ui-heroTitle").innerText = SITE_DATA.heroTitle;
             document.getElementById("ui-heroSub").innerText = SITE_DATA.heroSub;
@@ -549,18 +595,10 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             document.getElementById("ui-letterPreview").innerText = SITE_DATA.letterText;
             document.getElementById("ui-modalLetterText").innerText = SITE_DATA.letterText;
 
-            // Set sumber audio utama untuk lagu Happy Birthday
-            const bgAudio = document.getElementById("bgAudio");
-            if (bgAudio) {
-                bgAudio.src = "HAPPY BIRTHDAY TO YOU PIANO INSTRUMENTAL BEST HAPPY BITHDAY MUSIC 2021.mp3";
-            }
-
-            // Set Gambar Preview Kad Utama
             if (SITE_DATA.images.length > 0) {
                 document.getElementById("ui-imgPreview1").src = SITE_DATA.images[0];
             }
 
-            // Papar Semua Gambar di Modal Our Memories
             const galleryGrid = document.getElementById("ui-galleryGrid");
             if (galleryGrid) {
                 galleryGrid.innerHTML = SITE_DATA.images.map(imgSrc => 
@@ -568,7 +606,6 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                 ).join('');
             }
 
-            // Papar Senarai Lagu
             const songsContainer = document.getElementById("ui-songsList");
             if (songsContainer) {
                 songsContainer.innerHTML = SITE_DATA.songs.map((song, idx) => `
@@ -588,9 +625,6 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             initCanvas();
         });
 
-        /* =========================================================
-           FUNGSI AUDIO / MUZIK
-           ========================================================= */
         function toggleAudio() {
             const audio = document.getElementById("bgAudio");
             const btn = document.getElementById("musicToggle");
@@ -598,7 +632,7 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             if (audio.paused) {
                 audio.play().then(() => {
                     btn.innerText = "⏸️";
-                }).catch(err => console.log("Gagal main audio:", err));
+                }).catch(err => console.log(err));
             } else {
                 audio.pause();
                 btn.innerText = "🎵";
@@ -632,12 +666,9 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             audio.play().then(() => {
                 btn.innerText = "⏸️";
                 document.getElementById(`play-btn-${index}`).innerText = "⏸";
-            }).catch(err => console.log("Gagal main lagu:", err));
+            }).catch(err => console.log(err));
         }
 
-        /* =========================================================
-           FUNGSI MODAL & INTERAKSI
-           ========================================================= */
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) modal.classList.add("active");
@@ -648,32 +679,62 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             if (modal) modal.classList.remove("active");
         }
 
-        /* =========================================================
-           ANIMASI LATAR BELAKANG (CANVAS BINTANG)
-           ========================================================= */
+        /* ANIMASI SPRINKLES (LOVE + STARS) */
         function initCanvas() {
             const canvas = document.getElementById("bgCanvas");
             const ctx = canvas.getContext("2d");
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
 
-            const stars = Array.from({ length: 50 }, () => ({
+            const items = Array.from({ length: 40 }, () => ({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                radius: Math.random() * 1.5 + 0.5,
-                alpha: Math.random(),
-                speed: Math.random() * 0.02 + 0.005
+                type: Math.random() > 0.5 ? 'heart' : 'star',
+                size: Math.random() * 12 + 8,
+                alpha: Math.random() * 0.7 + 0.3,
+                speedY: Math.random() * 0.6 + 0.2,
+                speedX: Math.sin(Math.random() * Math.PI) * 0.3
             }));
+
+            function drawHeart(x, y, size, color) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.fillStyle = color;
+                const topCurveHeight = size * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+                ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+                ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + size, x, y + size);
+                ctx.bezierCurveTo(x, y + size, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+                ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function drawStar(x, y, size, color) {
+                ctx.save();
+                ctx.fillStyle = color;
+                ctx.font = `${size}px sans-serif`;
+                ctx.fillText("✨", x, y);
+                ctx.restore();
+            }
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-                stars.forEach(star => {
-                    star.alpha += star.speed;
-                    if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
-                    ctx.fillStyle = `rgba(212, 175, 55, ${Math.abs(star.alpha)})`;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fill();
+                items.forEach(item => {
+                    item.y -= item.speedY;
+                    item.x += item.speedX;
+
+                    if (item.y < -20) {
+                        item.y = height + 20;
+                        item.x = Math.random() * width;
+                    }
+
+                    if (item.type === 'heart') {
+                        drawHeart(item.x, item.y, item.size, `rgba(212, 175, 55, ${item.alpha})`);
+                    } else {
+                        drawStar(item.x, item.y, item.size, `rgba(255, 255, 255, ${item.alpha})`);
+                    }
                 });
                 requestAnimationFrame(animate);
             }
