@@ -293,6 +293,9 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
         }
         .gallery-img {
             width: 100%;
@@ -347,9 +350,9 @@
 </head>
 <body>
 
-    <!-- ELEMEN AUDIO UTAMA (INSTRUMENTAL BIRTHDAY TENANG) -->
+    <!-- ELEMEN AUDIO UTAMA -->
     <audio id="bgAudio" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8230536.mp3" type="audio/mpeg">
+        <source src="Overnight - Kita Lewati Berdua (Official Audio).mp3" type="audio/mpeg">
     </audio>
 
     <!-- Canvas Latar Belakang -->
@@ -378,7 +381,7 @@
             <!-- Kad 2: Our Memories -->
             <div class="grid-card" onclick="openModal('modal-memories')">
                 <div class="card-title">Our Memories</div>
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80" class="photo-preview-box" id="ui-imgPreview1" alt="Memory">
+                <img src="" class="photo-preview-box" id="ui-imgPreview1" alt="Memory">
                 <div class="btn-open">Lihat</div>
             </div>
 
@@ -394,7 +397,7 @@
             <div class="grid-card" onclick="openModal('modal-calendar')">
                 <div class="card-title">Tarikh Penting</div>
                 <div class="card-icon">📅</div>
-                <p class="card-preview" id="ui-datePreview">18 Ogos 2007</p>
+                <p class="card-preview" id="ui-datePreview">20 Ogos 2007</p>
                 <div class="btn-open">Nahh</div>
             </div>
 
@@ -431,9 +434,8 @@
             </div>
             <div class="modal-body">
                 <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 12px;">Kenangan manis yang takkan baby lupakan:</p>
-                <div class="gallery-grid">
-                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&auto=format&fit=crop&q=80" class="gallery-img" id="ui-img1" alt="Foto 1">
-                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop&q=80" class="gallery-img" id="ui-img2" alt="Foto 2">
+                <div class="gallery-grid" id="ui-galleryGrid">
+                    <!-- Gambar dimasukkan secara dinamik dari JS -->
                 </div>
             </div>
         </div>
@@ -459,9 +461,9 @@
                     <h3 id="ui-calMonthYear" style="color: var(--accent-gold);">Ogos 2007</h3>
                     <div class="calendar-grid">
                         <div class="day-name">A</div><div class="day-name">I</div><div class="day-name">S</div><div class="day-name">R</div><div class="day-name">K</div><div class="day-name">J</div><div class="day-name">S</div>
-                        <div class="day-num">12</div><div class="day-num">13</div><div class="day-num">14</div><div class="day-num">15</div><div class="day-num">16</div><div class="day-num">17</div>
-                        <div class="day-num highlight" id="ui-calDay">18</div>
-                        <div class="day-num">19</div><div class="day-num">20</div><div class="day-num">21</div><div class="day-num">22</div><div class="day-num">23</div><div class="day-num">24</div>
+                        <div class="day-num">14</div><div class="day-num">15</div><div class="day-num">16</div><div class="day-num">17</div><div class="day-num">18</div><div class="day-num">19</div>
+                        <div class="day-num highlight" id="ui-calDay">20</div>
+                        <div class="day-num">21</div><div class="day-num">22</div><div class="day-num">23</div><div class="day-num">24</div><div class="day-num">25</div><div class="day-num">26</div>
                     </div>
                 </div>
                 <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted);" id="ui-calNote">
@@ -481,7 +483,6 @@
         </div>
 
     </div>
-
     <!-- =========================================================
        6. JAVASCRIPT & KANDUNGAN
        ========================================================= -->
@@ -499,8 +500,12 @@
             calendarMonthYear: "Ogos 2007",
             highlightDay: "20",
 
-            image1: "IMG-20231124-WA0020.jpeg",
-            image2: "IMG-20250418-WA0012.jpg",
+            // Tambah sahaja nama gambar dalam senarai ini (array)
+            images: [
+                "IMG-20231124-WA0020.jpeg",
+                "IMG-20250418-WA0012.jpg"
+                // Bole tambah lagi gambar cth: "gambar3.jpeg", "gambar4.jpg"
+            ],
 
             birthdayWish: `Selamat hari lahir buat insan yang paling bermakna dalam hidup baby! ❤️
             
@@ -525,7 +530,8 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
                 { title: "Bunga Maaf", artist: "Lagu banyak jugakk kenangan", url: "The Lantis - Bunga Maaf (Visualizer).mp3" }
             ]
         };
-let currentSongIndex = null;
+
+        let currentSongIndex = null;
 
         /* =========================================================
            POPULATE DATA KE UI
@@ -544,11 +550,20 @@ let currentSongIndex = null;
             document.getElementById("ui-letterPreview").innerText = SITE_DATA.letterText;
             document.getElementById("ui-modalLetterText").innerText = SITE_DATA.letterText;
 
-            document.getElementById("ui-imgPreview1").src = SITE_DATA.image1;
-            document.getElementById("ui-img1").src = SITE_DATA.image1;
-            document.getElementById("ui-img2").src = SITE_DATA.image2;
+            // Set Gambar Preview Kad Utama
+            if (SITE_DATA.images.length > 0) {
+                document.getElementById("ui-imgPreview1").src = SITE_DATA.images[0];
+            }
 
-            // Papar senarai lagu
+            // Papar Semua Gambar di Modal Our Memories
+            const galleryGrid = document.getElementById("ui-galleryGrid");
+            if (galleryGrid) {
+                galleryGrid.innerHTML = SITE_DATA.images.map(imgSrc => 
+                    `<img src="${imgSrc}" class="gallery-img" alt="Memory">`
+                ).join('');
+            }
+
+            // Papar Senarai Lagu
             const songsContainer = document.getElementById("ui-songsList");
             if (songsContainer) {
                 songsContainer.innerHTML = SITE_DATA.songs.map((song, idx) => `
@@ -665,4 +680,3 @@ let currentSongIndex = null;
     </script>
 </body>
 </html>
- 
