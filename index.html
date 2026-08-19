@@ -487,7 +487,7 @@
        6. JAVASCRIPT & KANDUNGAN
        ========================================================= -->
     <script>
-        /* =========================================================
+     /* =========================================================
            DATA KANDUNGAN
            ========================================================= */
         const SITE_DATA = {
@@ -504,7 +504,6 @@
             images: [
                 "IMG-20231124-WA0020.jpeg",
                 "IMG-20250418-WA0012.jpg"
-                // Bole tambah lagi gambar cth: "gambar3.jpeg", "gambar4.jpg"
             ],
 
             birthdayWish: `Selamat hari lahir buat insan yang paling bermakna dalam hidup baby! ❤️
@@ -550,6 +549,12 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             document.getElementById("ui-letterPreview").innerText = SITE_DATA.letterText;
             document.getElementById("ui-modalLetterText").innerText = SITE_DATA.letterText;
 
+            // Set sumber audio utama untuk lagu Happy Birthday
+            const bgAudio = document.getElementById("bgAudio");
+            if (bgAudio) {
+                bgAudio.src = "HAPPY BIRTHDAY TO YOU PIANO INSTRUMENTAL BEST HAPPY BITHDAY MUSIC 2021.mp3";
+            }
+
             // Set Gambar Preview Kad Utama
             if (SITE_DATA.images.length > 0) {
                 document.getElementById("ui-imgPreview1").src = SITE_DATA.images[0];
@@ -591,8 +596,9 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
             const btn = document.getElementById("musicToggle");
 
             if (audio.paused) {
-                audio.play();
-                btn.innerText = "⏸️";
+                audio.play().then(() => {
+                    btn.innerText = "⏸️";
+                }).catch(err => console.log("Gagal main audio:", err));
             } else {
                 audio.pause();
                 btn.innerText = "🎵";
@@ -623,9 +629,10 @@ babyy sayangg yayangg tauu. selamat hari jadi buah hati saya 💐<3
 
             currentSongIndex = index;
             audio.src = SITE_DATA.songs[index].url;
-            audio.play();
-            btn.innerText = "⏸️";
-            document.getElementById(`play-btn-${index}`).innerText = "⏸";
+            audio.play().then(() => {
+                btn.innerText = "⏸️";
+                document.getElementById(`play-btn-${index}`).innerText = "⏸";
+            }).catch(err => console.log("Gagal main lagu:", err));
         }
 
         /* =========================================================
